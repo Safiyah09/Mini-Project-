@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Pharmaceutical Management System
 
 College Mini-Project: **Pharmaceutical Management System** multi-database backend built with **Node.js**, **Express**, and **MongoDB Atlas** (using **Mongoose 8**).
@@ -66,3 +67,6 @@ cd "D:\Pharmaceutical management\backend"
 5. **API Documentation & Postman:**
    - Documentation: [`backend/docs/API_DOCUMENTATION.md`](backend/docs/API_DOCUMENTATION.md)
    - Postman Collection: [`backend/docs/Pharmaceutical_Management_System.postman_collection.json`](backend/docs/Pharmaceutical_Management_System.postman_collection.json)
+=======
+# Mini-Project-
+>>>>>>> 616319de2053ecc44bab7d6beeb940d1d7a70d27
