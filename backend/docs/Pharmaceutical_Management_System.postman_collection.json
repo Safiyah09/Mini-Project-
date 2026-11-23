@@ -1,0 +1,762 @@
+{
+  "info": {
+    "_postman_id": "7f8b91a2-3c4d-5e6f-7a8b-9c0d1e2f3a4b",
+    "name": "Pharmaceutical Management System API (Warehouse & Pharmacy)",
+    "description": "Comprehensive Postman API collection for the Pharmaceutical Management System.\nFeatures Central Warehouse & Multi-branch Pharmacy systems with JWT auth, FEFO allocation, POS checkout, and Inter-service bridge.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:5000",
+      "type": "string"
+    },
+    {
+      "key": "whToken",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "phToken",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "pharmacyId",
+      "value": "pharmacy",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "0. System Health",
+      "item": [
+        {
+          "name": "Health Check & Database ReadyStates",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/health",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "health"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "1. Warehouse - Auth & Users",
+      "item": [
+        {
+          "name": "Warehouse Login (Admin)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json();",
+                  "if (json.success && json.data && json.data.token) {",
+                  "    pm.collectionVariables.set('whToken', json.data.token);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"admin\",\n  \"password\": \"Password@123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/warehouse/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "warehouse", "auth", "login"]
+            }
+          }
+        },
+        {
+          "name": "Warehouse Current Profile (Me)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{whToken}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/warehouse/auth/me",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "warehouse", "auth", "me"]
+            }
+          }
+        },
+        {
+          "name": "Warehouse Roles",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{whToken}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/warehouse/roles",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "warehouse", "roles"]
+            }
+          }
+        },
+        {
+          "name": "Warehouse Users List",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{whToken}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/warehouse/users",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "warehouse", "users"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "2. Warehouse - Master Data",
+      "item": [
+        {
+          "name": "List Suppliers",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{whToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/warehouse/suppliers",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "warehouse", "suppliers"]
+            }
+          }
+        },
+        {
+          "name": "Create Supplier",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{whToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"supplier_id\": \"SUP-ZYD-01\",\n  \"name\": \"Zydus Lifesciences Ltd.\",\n  \"address\": \"Zydus Corporate Park, Ahmedabad\",\n  \"contact\": \"+91-7948080000\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/warehouse/suppliers",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "warehouse", "suppliers"]
+            }
+          }
+        },
+        {
+          "name": "List Warehouse Medicines",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{whToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/warehouse/medicines",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "warehouse", "medicines"]
+            }
+          }
+        },
+        {
+          "name": "Create Warehouse Medicine",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{whToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"medicine_id\": \"MED-PNT-40\",\n  \"name\": \"Pantoprazole 40mg\",\n  \"manufacturer\": \"Sun Pharma\",\n  \"category\": \"Gastrointestinal\",\n  \"dosage\": \"40mg\",\n  \"formulation\": \"Tablet\",\n  \"reorder_level\": 500\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/warehouse/medicines",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "warehouse", "medicines"]
+            }
+          }
+        },
+        {
+          "name": "List Storage Locations",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{whToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/warehouse/locations",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "warehouse", "locations"]
+            }
+          }
+        },
+        {
+          "name": "List Registered Pharmacies",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{whToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/warehouse/pharmacies",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "warehouse", "pharmacies"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "3. Warehouse - Procurement (PO & Goods Receipts)",
+      "item": [
+        {
+          "name": "Create Purchase Order",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{whToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"supplier\": \"SUP-SUN-01\",\n  \"order_date\": \"2026-11-02\",\n  \"expected_delivery_date\": \"2026-11-10\",\n  \"items\": [\n    {\n      \"medicine\": \"MED-PCM-500\",\n      \"quantity\": 5000,\n      \"unit_price\": 12.50\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/warehouse/purchase-orders",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "warehouse", "purchase-orders"]
+            }
+          }
+        },
+        {
+          "name": "List Purchase Orders",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{whToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/warehouse/purchase-orders",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "warehouse", "purchase-orders"]
+            }
+          }
+        },
+        {
+          "name": "Receive Goods (Goods Receipt & Batch Inwards)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{whToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"purchase_order\": \"PO-2026-001\",\n  \"items\": [\n    {\n      \"po_item\": \"POI-PO-2026-001-01\",\n      \"batch_number\": \"BAT-PCM-2028-A1\",\n      \"quantity_received\": 5000,\n      \"manufacturing_date\": \"2026-01-01\",\n      \"expiry_date\": \"2028-12-31\",\n      \"storage_location\": \"LOC-ZA-R01-B01\"\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/warehouse/goods-receipts",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "warehouse", "goods-receipts"]
+            }
+          }
+        },
+        {
+          "name": "List Goods Receipts",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{whToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/warehouse/goods-receipts",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "warehouse", "goods-receipts"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "4. Warehouse - Inventory & FEFO",
+      "item": [
+        {
+          "name": "List Warehouse Stocks",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{whToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/warehouse/stocks",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "warehouse", "stocks"]
+            }
+          }
+        },
+        {
+          "name": "Get FEFO Sorted Batches for Medicine",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{whToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/warehouse/stocks/fefo/MED-PCM-500",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "warehouse", "stocks", "fefo", "MED-PCM-500"]
+            }
+          }
+        },
+        {
+          "name": "Record Warehouse Stock Adjustment",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{whToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"stock\": \"STK-PCM-001\",\n  \"adjustment_type\": \"DISCREPANCY\",\n  \"quantity_adjusted\": -10,\n  \"reason\": \"Damaged bottle during routine pallet audit\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/warehouse/adjustments",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "warehouse", "adjustments"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "5. Warehouse - Dispatches & Transfers",
+      "item": [
+        {
+          "name": "List Pharmacy Supply Requests in Warehouse Queue",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{whToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/warehouse/supply-requests",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "warehouse", "supply-requests"]
+            }
+          }
+        },
+        {
+          "name": "Create Stock Transfer (Automated FEFO Allocation)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{whToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"supply_request\": \"REQ-PH-001\",\n  \"shipping_reference\": \"BLUEDART-TRF-091\",\n  \"auto_fefo\": true\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/warehouse/transfers",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "warehouse", "transfers"]
+            }
+          }
+        },
+        {
+          "name": "Dispatch Stock Transfer",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Authorization", "value": "Bearer {{whToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/warehouse/transfers/:transferId/dispatch",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "warehouse", "transfers", ":transferId", "dispatch"],
+              "variable": [{ "key": "transferId", "value": "TRANSFER_OBJECT_ID_OR_CODE" }]
+            }
+          }
+        },
+        {
+          "name": "Notify Pharmacy of Dispatch (Broadcast Alert)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Authorization", "value": "Bearer {{whToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/warehouse/transfers/:transferId/notify",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "warehouse", "transfers", ":transferId", "notify"],
+              "variable": [{ "key": "transferId", "value": "TRANSFER_OBJECT_ID" }]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "6. Warehouse - Invoices, Payments & Returns",
+      "item": [
+        {
+          "name": "List Dispatched Invoices",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{whToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/warehouse/invoices",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "warehouse", "invoices"]
+            }
+          }
+        },
+        {
+          "name": "Record Payment Against Invoice",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{whToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"invoice_id\": \"INV-TRF-001\",\n  \"amount\": 3750,\n  \"method\": \"BANK_TRANSFER\",\n  \"reference_number\": \"UTR-HDFC-991827\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/warehouse/payments",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "warehouse", "payments"]
+            }
+          }
+        },
+        {
+          "name": "Supplier Return (Return Damaged Stock to Supplier)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{whToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"gr_item\": \"GRI-2026-001\",\n  \"quantity\": 25,\n  \"reason\": \"Packaging seal breach observed upon receipt\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/warehouse/returns/supplier",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "warehouse", "returns", "supplier"]
+            }
+          }
+        },
+        {
+          "name": "Pharmacy Return (Accept Return from Pharmacy)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{whToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"transfer_item\": \"TRI-TRF-001-01\",\n  \"quantity\": 10,\n  \"reason\": \"Overstock return from branch\",\n  \"restock_to_inventory\": true\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/warehouse/returns/pharmacy",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "warehouse", "returns", "pharmacy"]
+            }
+          }
+        },
+        {
+          "name": "List Audit Logs",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{whToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/warehouse/audit-logs?limit=50",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "warehouse", "audit-logs"],
+              "query": [{ "key": "limit", "value": "50" }]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "7. Pharmacy - Auth & Customers",
+      "item": [
+        {
+          "name": "Pharmacy Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json();",
+                  "if (json.success && json.data && json.data.token) {",
+                  "    pm.collectionVariables.set('phToken', json.data.token);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "x-pharmacy-id", "value": "{{pharmacyId}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"pharmadmin\",\n  \"password\": \"Password@123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/pharmacy/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "pharmacy", "auth", "login"]
+            }
+          }
+        },
+        {
+          "name": "Pharmacy Current Profile",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{phToken}}" },
+              { "key": "x-pharmacy-id", "value": "{{pharmacyId}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/pharmacy/auth/me",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "pharmacy", "auth", "me"]
+            }
+          }
+        },
+        {
+          "name": "List Pharmacy Customers",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{phToken}}" },
+              { "key": "x-pharmacy-id", "value": "{{pharmacyId}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/pharmacy/customers",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "pharmacy", "customers"]
+            }
+          }
+        },
+        {
+          "name": "Create Pharmacy Customer",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{phToken}}" },
+              { "key": "x-pharmacy-id", "value": "{{pharmacyId}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Rajesh Kumar\",\n  \"phone\": \"+91-9876543210\",\n  \"email\": \"rajesh.k@example.com\",\n  \"address\": \"12th Main, Indiranagar, Bengaluru\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/pharmacy/customers",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "pharmacy", "customers"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "8. Pharmacy - Supply Requests & Inward Receipts",
+      "item": [
+        {
+          "name": "Create Branch Supply Request",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{phToken}}" },
+              { "key": "x-pharmacy-id", "value": "{{pharmacyId}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"items\": [\n    {\n      \"medicine\": \"MED-PCM-500\",\n      \"quantity_requested\": 500\n    }\n  ],\n  \"notes\": \"Regular weekly stock replenishment\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/pharmacy/supply-requests",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "pharmacy", "supply-requests"]
+            }
+          }
+        },
+        {
+          "name": "Transmit Supply Request to Central Warehouse",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{phToken}}" },
+              { "key": "x-pharmacy-id", "value": "{{pharmacyId}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/pharmacy/supply-requests/:requestId/transmit",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "pharmacy", "supply-requests", ":requestId", "transmit"],
+              "variable": [{ "key": "requestId", "value": "SUPPLY_REQUEST_OBJECT_ID" }]
+            }
+          }
+        },
+        {
+          "name": "Lookup Warehouse Transfer Manifest (Inter-Service Bridge)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{phToken}}" },
+              { "key": "x-pharmacy-id", "value": "{{pharmacyId}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/pharmacy/receipts/warehouse-transfer/:transferId",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "pharmacy", "receipts", "warehouse-transfer", ":transferId"],
+              "variable": [{ "key": "transferId", "value": "TRF-COMM-001" }]
+            }
+          }
+        },
+        {
+          "name": "Confirm Stock Receipt & Update Pharmacy Inventory",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{phToken}}" },
+              { "key": "x-pharmacy-id", "value": "{{pharmacyId}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"transfer_id\": \"TRF-COMM-001\",\n  \"items\": [\n    {\n      \"medicine\": \"MED-PCM-500\",\n      \"batch_number\": \"BAT-PCM-2027-B1\",\n      \"quantity_received\": 500,\n      \"expiry_date\": \"2027-06-30\",\n      \"manufacturing_date\": \"2025-06-01\"\n    }\n  ],\n  \"notes\": \"All boxes intact and sealed\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/pharmacy/receipts",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "pharmacy", "receipts"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "9. Pharmacy - Point of Sale (POS) & Returns",
+      "item": [
+        {
+          "name": "Process Sale (POS Checkout)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{phToken}}" },
+              { "key": "x-pharmacy-id", "value": "{{pharmacyId}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customer\": \"CUST-001\",\n  \"payment_method\": \"UPI\",\n  \"discount_amount\": 0,\n  \"items\": [\n    {\n      \"batch\": \"BAT-PCM-2027-B1\",\n      \"quantity\": 5,\n      \"unit_price\": 17.50\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/pharmacy/sales",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "pharmacy", "sales"]
+            }
+          }
+        },
+        {
+          "name": "List Sales Transactions",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{phToken}}" },
+              { "key": "x-pharmacy-id", "value": "{{pharmacyId}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/pharmacy/sales",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "pharmacy", "sales"]
+            }
+          }
+        },
+        {
+          "name": "Process Customer Sales Return",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{phToken}}" },
+              { "key": "x-pharmacy-id", "value": "{{pharmacyId}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sale_item\": \"SALE_ITEM_OBJECT_ID\",\n  \"quantity\": 2,\n  \"reason\": \"Customer purchased incorrect strength by mistake\",\n  \"restock\": true\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/pharmacy/returns",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "pharmacy", "returns"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "10. Pharmacy - Adjustments & Alerts",
+      "item": [
+        {
+          "name": "List Pharmacy Alerts (Low Stock / Shipments)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{phToken}}" },
+              { "key": "x-pharmacy-id", "value": "{{pharmacyId}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/pharmacy/alerts",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "pharmacy", "alerts"]
+            }
+          }
+        },
+        {
+          "name": "Resolve Alert",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{phToken}}" },
+              { "key": "x-pharmacy-id", "value": "{{pharmacyId}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/pharmacy/alerts/:alertId/resolve",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "pharmacy", "alerts", ":alertId", "resolve"],
+              "variable": [{ "key": "alertId", "value": "ALERT_OBJECT_ID" }]
+            }
+          }
+        },
+        {
+          "name": "Record Pharmacy Stock Adjustment",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{phToken}}" },
+              { "key": "x-pharmacy-id", "value": "{{pharmacyId}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"stock\": \"PHARMACY_STOCK_OBJECT_ID\",\n  \"adjustment_type\": \"DISCREPANCY\",\n  \"quantity_adjusted\": -2,\n  \"reason\": \"Fell from counter and broke seal\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/pharmacy/adjustments",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "pharmacy", "adjustments"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

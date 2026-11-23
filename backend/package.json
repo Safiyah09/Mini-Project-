@@ -1,0 +1,49 @@
+{
+  "name": "pharmaceutical-management-backend",
+  "version": "1.0.0",
+  "description": "Pharmaceutical Management System - Multi-Database Backend (Warehouse & Pharmacy) with Node.js, Express, and MongoDB Atlas",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
+    "test-db": "node -e \"require('./src/config/database').testConnections()\"",
+    "init-db": "node src/scripts/createIndexes.js",
+    "seed": "node src/scripts/seedData.js",
+    "test": "node tests/testAuthAndCrud.js",
+    "test:auth": "node tests/testAuthAndCrud.js",
+    "test:inventory": "node tests/testInventoryAndTransfer.js",
+    "test:bridge": "node tests/testInterCommunication.js",
+    "test:e1": "node tests/testE1WarehouseLedger.js",
+    "test:e2": "node tests/testE2PharmacyOrderDispatch.js",
+    "test:e3": "node tests/testE3BatchAndFefo.js",
+    "test:e4": "node tests/testE4ConcurrentTransactionQuality.js",
+    "test:verification": "node tests/testFinalVerificationE1E4.js",
+    "test:engines": "node tests/testE1WarehouseLedger.js && node tests/testE2PharmacyOrderDispatch.js && node tests/testE3BatchAndFefo.js && node tests/testE4ConcurrentTransactionQuality.js && node tests/testFinalVerificationE1E4.js",
+    "test:all": "node tests/testAuthAndCrud.js && node tests/testInventoryAndTransfer.js && node tests/testInterCommunication.js",
+    "test:full": "npm run test:all && npm run test:engines"
+  },
+  "keywords": [
+    "nodejs",
+    "express",
+    "mongodb",
+    "mongoose",
+    "pharmaceutical-management",
+    "jwt",
+    "bcrypt",
+    "multi-database"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.12.1",
+    "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.9"
+  }
+}

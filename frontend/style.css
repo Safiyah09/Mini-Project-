@@ -1,0 +1,1163 @@
+/* ==========================================================================
+   Pharmaceutical Management System - Login & Register CSS
+   Design faithfully matched to reference image (Diprella / Split-panel Teal)
+   ========================================================================== */
+
+:root {
+  --teal-primary: #23a892;
+  --teal-dark: #178a77;
+  --teal-light: #2ec4b6;
+  --teal-gradient: linear-gradient(135deg, #2ec4b6 0%, #169b88 100%);
+  --teal-hover: #1b7a6b;
+  
+  --bg-canvas: #f4f7f6;
+  --card-bg: #ffffff;
+  --input-bg: #f0f4f3;
+  --input-border: #e1e8e6;
+  
+  --text-main: #2d3748;
+  --text-muted: #8c9b96;
+  --text-light: #a0aab2;
+  
+  --accent-yellow: #f9b233;
+  --accent-red: #f05454;
+  --accent-blue: #3b82f6;
+  
+  --shadow-card: 0 14px 28px rgba(0, 0, 0, 0.12), 0 10px 10px rgba(0, 0, 0, 0.08);
+  --shadow-btn: 0 4px 14px rgba(35, 168, 146, 0.35);
+  --transition-speed: 0.6s;
+  --font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-family);
+  background: var(--bg-canvas);
+  color: var(--text-main);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  overflow-x: hidden;
+  padding: 16px 20px 24px;
+}
+
+/* ==========================================================================
+   Ambient Geometric Accents (Matching Reference Image Layout)
+   ========================================================================== */
+.corner-accent {
+  position: fixed;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Red/Coral angled polygon in top-right */
+.corner-top-right {
+  top: 0;
+  right: 0;
+  width: 140px;
+  height: 140px;
+  background: var(--accent-red);
+  clip-path: polygon(100% 0, 0 0, 100% 100%);
+  opacity: 0.9;
+}
+
+/* Bright yellow circular arc in bottom-left */
+.corner-bottom-left {
+  bottom: -40px;
+  left: -40px;
+  width: 220px;
+  height: 220px;
+  background: var(--accent-yellow);
+  border-radius: 50%;
+  opacity: 0.95;
+}
+
+/* ==========================================================================
+   Header & System Metadata
+   ========================================================================== */
+.system-header {
+  width: 100%;
+  max-width: 1080px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+  z-index: 10;
+  padding: 4px 8px;
+}
+
+.system-meta {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.header-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--teal-dark);
+}
+
+.header-logo strong {
+  color: #1a202c;
+  font-weight: 700;
+}
+
+.med-cross-icon {
+  width: 26px;
+  height: 26px;
+  color: var(--teal-primary);
+}
+
+.problem-statement-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #e6f6f3;
+  color: #127967;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 0.78rem;
+  font-weight: 500;
+  border: 1px solid #bce6dc;
+}
+
+.badge-dot {
+  width: 7px;
+  height: 7px;
+  background: var(--teal-primary);
+  border-radius: 50%;
+  display: inline-block;
+  box-shadow: 0 0 0 2px rgba(35, 168, 146, 0.25);
+}
+
+.api-status-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.api-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.api-badge.checking {
+  background: #f1f5f9;
+  color: #64748b;
+  border: 1px solid #cbd5e1;
+}
+
+.api-badge.online {
+  background: #dcfce7;
+  color: #15803d;
+  border: 1px solid #86efac;
+}
+
+.api-badge.offline {
+  background: #fee2e2;
+  color: #b91c1c;
+  border: 1px solid #fca5a5;
+}
+
+.status-indicator {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.api-retry-btn {
+  background: #ffffff;
+  border: 1px solid #d1d5db;
+  color: #4b5563;
+  padding: 5px 10px;
+  border-radius: 16px;
+  font-size: 0.72rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  transition: all 0.2s ease;
+}
+
+.api-retry-btn:hover {
+  background: #f9fafb;
+  color: var(--teal-dark);
+  border-color: var(--teal-primary);
+}
+
+/* ==========================================================================
+   Main Sliding Container (Image Replica)
+   ========================================================================== */
+.main-wrapper {
+  z-index: 5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.container {
+  background: var(--card-bg);
+  border-radius: 22px;
+  box-shadow: var(--shadow-card);
+  position: relative;
+  overflow: hidden;
+  width: 880px;
+  max-width: 95vw;
+  min-height: 560px;
+  display: flex;
+}
+
+/* ==========================================================================
+   Forms Layout
+   ========================================================================== */
+.form-container {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  transition: all var(--transition-speed) ease-in-out;
+  padding: 24px 44px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  background: #ffffff;
+}
+
+form {
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 380px;
+  margin: 0 auto;
+}
+
+.form-title {
+  font-size: 1.85rem;
+  font-weight: 700;
+  color: var(--teal-primary);
+  margin-bottom: 8px;
+}
+
+.form-subtext {
+  font-size: 0.76rem;
+  color: var(--text-light);
+  margin: 6px 0 10px;
+}
+
+/* ==========================================================================
+   Social Icons Row (f, G+, in exactly like picture)
+   ========================================================================== */
+.social-container {
+  margin: 6px 0 4px;
+  display: flex;
+  gap: 12px;
+}
+
+.social {
+  border: 1px solid #e2e8f0;
+  border-radius: 50%;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  height: 38px;
+  width: 38px;
+  text-decoration: none;
+  color: #4a5568;
+  font-weight: 700;
+  font-size: 0.88rem;
+  transition: all 0.25s ease;
+  background: #ffffff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.social:hover {
+  border-color: var(--teal-primary);
+  color: var(--teal-primary);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(35, 168, 146, 0.18);
+}
+
+/* ==========================================================================
+   Portal Selector (Warehouse vs Pharmacy)
+   ========================================================================== */
+.portal-selector {
+  display: flex;
+  background: #eef4f2;
+  border-radius: 20px;
+  padding: 3px;
+  margin: 8px 0 10px;
+  width: 100%;
+  gap: 3px;
+}
+
+.portal-pill {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #64748b;
+  padding: 6px 8px;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  user-select: none;
+}
+
+.portal-pill input[type="radio"] {
+  display: none;
+}
+
+.portal-pill.active {
+  background: #ffffff;
+  color: var(--teal-dark);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
+}
+
+/* ==========================================================================
+   Form Input Fields (Light gray rounded bars with icons)
+   ========================================================================== */
+.input-group {
+  position: relative;
+  width: 100%;
+  margin: 5px 0;
+  display: flex;
+  align-items: center;
+}
+
+.input-icon {
+  position: absolute;
+  left: 12px;
+  color: #94a3b8;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.input-group input,
+.input-group select {
+  background-color: var(--input-bg);
+  border: 1px solid transparent;
+  padding: 10px 14px 10px 38px;
+  border-radius: 8px;
+  width: 100%;
+  font-size: 0.82rem;
+  font-family: inherit;
+  color: var(--text-main);
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.input-group input:focus,
+.input-group select:focus {
+  background-color: #ffffff;
+  border-color: var(--teal-light);
+  box-shadow: 0 0 0 3px rgba(46, 196, 182, 0.15);
+}
+
+.input-group input::placeholder {
+  color: #a0aab2;
+  font-weight: 400;
+}
+
+.select-group select {
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%2394a3b8%22%20stroke-width%3D%222%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C%2Fpolyline%3E%3C%2Fsvg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 32px;
+}
+
+.pwd-toggle-btn {
+  position: absolute;
+  right: 10px;
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 4px;
+}
+
+.pwd-toggle-btn:hover {
+  color: var(--teal-primary);
+}
+
+.hidden {
+  display: none !important;
+}
+
+.forgot-link {
+  color: #94a3b8;
+  font-size: 0.74rem;
+  text-decoration: none;
+  margin: 6px 0 12px;
+  transition: color 0.2s ease;
+}
+
+.forgot-link:hover {
+  color: var(--teal-primary);
+  text-decoration: underline;
+}
+
+/* ==========================================================================
+   Buttons (Ghost & Solid Teal Pills)
+   ========================================================================== */
+.btn {
+  border-radius: 25px;
+  border: none;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  padding: 13px 48px;
+  text-transform: uppercase;
+  transition: all 0.25s ease;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-family: inherit;
+}
+
+.btn-primary {
+  background-color: var(--teal-primary);
+  color: #ffffff;
+  box-shadow: var(--shadow-btn);
+  margin-top: 6px;
+}
+
+.btn-primary:hover {
+  background-color: var(--teal-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(35, 168, 146, 0.45);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+.btn-ghost {
+  border: 2px solid #ffffff;
+  background-color: transparent;
+  color: #ffffff;
+  box-shadow: none;
+}
+
+.btn-ghost:hover {
+  background-color: #ffffff;
+  color: var(--teal-dark);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.btn-secondary {
+  background: #f1f5f9;
+  color: #475569;
+  border: 1px solid #cbd5e1;
+}
+
+.btn-secondary:hover {
+  background: #e2e8f0;
+  color: #1e293b;
+}
+
+.btn-spinner {
+  display: none;
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+.btn.loading .btn-spinner {
+  display: inline-block;
+}
+
+.btn.loading .btn-text {
+  opacity: 0.8;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ==========================================================================
+   Quick Demo Credentials Row
+   ========================================================================== */
+.quick-demo-wrapper {
+  margin-top: 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.quick-demo-label {
+  font-size: 0.68rem;
+  color: #94a3b8;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+
+.quick-demo-tags {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.demo-tag {
+  background: #f0fdfa;
+  border: 1px dashed #5eead4;
+  color: #0d9488;
+  font-size: 0.68rem;
+  padding: 4px 10px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-weight: 500;
+}
+
+.demo-tag:hover {
+  background: #ccfbf1;
+  border-color: #14b8a6;
+  transform: translateY(-1px);
+}
+
+/* ==========================================================================
+   Sliding Container Mechanics
+   ========================================================================== */
+.sign-in-container {
+  left: 0;
+  width: 50%;
+  z-index: 2;
+}
+
+.sign-up-container {
+  left: 0;
+  width: 50%;
+  opacity: 0;
+  z-index: 1;
+}
+
+/* In the reference image: Left side is Teal Overlay, Right side is Create Account */
+/* This happens when .right-panel-active is set! */
+.container.right-panel-active .sign-in-container {
+  transform: translateX(100%);
+  opacity: 0;
+  z-index: 1;
+}
+
+.container.right-panel-active .sign-up-container {
+  transform: translateX(100%);
+  opacity: 1;
+  z-index: 5;
+  animation: show 0.6s;
+}
+
+@keyframes show {
+  0%, 49.99% {
+    opacity: 0;
+    z-index: 1;
+  }
+  50%, 100% {
+    opacity: 1;
+    z-index: 5;
+  }
+}
+
+/* ==========================================================================
+   Overlay (Teal Side in Picture)
+   ========================================================================== */
+.overlay-container {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 50%;
+  height: 100%;
+  overflow: hidden;
+  transition: transform var(--transition-speed) ease-in-out;
+  z-index: 100;
+}
+
+.container.right-panel-active .overlay-container {
+  transform: translateX(-100%);
+}
+
+.overlay {
+  background: var(--teal-gradient);
+  color: #ffffff;
+  position: relative;
+  left: -100%;
+  height: 100%;
+  width: 200%;
+  transform: translateX(0);
+  transition: transform var(--transition-speed) ease-in-out;
+}
+
+.container.right-panel-active .overlay {
+  transform: translateX(50%);
+}
+
+.overlay-panel {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 0 40px;
+  text-align: center;
+  top: 0;
+  height: 100%;
+  width: 50%;
+  transform: translateX(0);
+  transition: transform var(--transition-speed) ease-in-out;
+  overflow: hidden;
+}
+
+.overlay-left {
+  transform: translateX(-20%);
+}
+
+.container.right-panel-active .overlay-left {
+  transform: translateX(0);
+}
+
+.overlay-right {
+  right: 0;
+  transform: translateX(0);
+}
+
+.container.right-panel-active .overlay-right {
+  transform: translateX(20%);
+}
+
+/* ==========================================================================
+   Overlay Brand & Watermarks (Faithful Replica of Reference)
+   ========================================================================== */
+.overlay-brand {
+  position: absolute;
+  top: 24px;
+  left: 32px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #ffffff;
+  z-index: 2;
+}
+
+.brand-symbol {
+  width: 24px;
+  height: 24px;
+  border: 1.5px solid rgba(255, 255, 255, 0.75);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px;
+}
+
+.brand-symbol svg {
+  width: 16px;
+  height: 16px;
+  stroke: #ffffff;
+}
+
+.brand-name {
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.brand-name span {
+  font-weight: 400;
+  opacity: 0.85;
+}
+
+/* Watermark Geometric Diamond Shapes in Teal background */
+.geo-shape {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.08);
+  pointer-events: none;
+}
+
+.diamond-1 {
+  width: 60px;
+  height: 60px;
+  top: 60px;
+  right: 40px;
+  transform: rotate(45deg);
+  border-radius: 8px;
+}
+
+.diamond-2 {
+  width: 140px;
+  height: 140px;
+  bottom: 20px;
+  right: -30px;
+  transform: rotate(45deg);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.diamond-3 {
+  width: 35px;
+  height: 35px;
+  top: 180px;
+  left: 20px;
+  transform: rotate(45deg);
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.circle-accent {
+  width: 180px;
+  height: 180px;
+  bottom: -60px;
+  left: -40px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.overlay-content {
+  position: relative;
+  z-index: 2;
+  max-width: 320px;
+}
+
+.overlay-heading {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+  color: #ffffff;
+  letter-spacing: -0.3px;
+}
+
+.overlay-desc {
+  font-size: 0.85rem;
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 26px;
+  font-weight: 300;
+}
+
+.system-caption {
+  margin-top: 24px;
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+/* ==========================================================================
+   Footer
+   ========================================================================== */
+.system-footer {
+  margin-top: 14px;
+  font-size: 0.75rem;
+  color: #64748b;
+  text-align: center;
+  max-width: 760px;
+  line-height: 1.5;
+  z-index: 10;
+}
+
+.system-footer strong {
+  color: #334155;
+}
+
+/* ==========================================================================
+   Toast Notifications
+   ========================================================================== */
+.toast-container {
+  position: fixed;
+  top: 24px;
+  right: 24px;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.toast {
+  min-width: 280px;
+  max-width: 400px;
+  background: #ffffff;
+  padding: 12px 18px;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.82rem;
+  animation: slideInToast 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  border-left: 4px solid var(--teal-primary);
+  color: #1f2937;
+}
+
+.toast.success {
+  border-left-color: #10b981;
+}
+
+.toast.error {
+  border-left-color: #ef4444;
+}
+
+.toast.info {
+  border-left-color: #3b82f6;
+}
+
+.toast-icon {
+  flex-shrink: 0;
+  display: flex;
+}
+
+.toast-msg {
+  flex: 1;
+}
+
+@keyframes slideInToast {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* ==========================================================================
+   Authenticated Session Modal (Dashboard Preview)
+   ========================================================================== */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(4px);
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: fadeIn 0.25s ease;
+}
+
+.modal-card {
+  background: #ffffff;
+  border-radius: 20px;
+  width: 580px;
+  max-width: 95vw;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+  animation: popIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.modal-header {
+  padding: 20px 24px;
+  border-bottom: 1px solid #f1f5f9;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  position: relative;
+}
+
+.modal-icon-wrapper.success {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: #dcfce7;
+  color: #15803d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-header h2 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.modal-sub {
+  font-size: 0.78rem;
+  color: #64748b;
+}
+
+.modal-close {
+  position: absolute;
+  top: 18px;
+  right: 20px;
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  color: #94a3b8;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.modal-close:hover {
+  color: #1e293b;
+}
+
+.modal-body {
+  padding: 20px 24px;
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+.user-summary-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: #f8fafc;
+  padding: 14px 18px;
+  border-radius: 14px;
+  border: 1px solid #e2e8f0;
+  margin-bottom: 18px;
+}
+
+.user-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--teal-primary);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 1.3rem;
+}
+
+.user-details h3 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 4px;
+}
+
+.user-badge {
+  display: inline-block;
+  background: #e0f2fe;
+  color: #0369a1;
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 6px;
+  margin-right: 6px;
+}
+
+.system-badge {
+  display: inline-block;
+  background: #fef3c7;
+  color: #b45309;
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 6px;
+}
+
+.meta-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.meta-item {
+  background: #ffffff;
+  border: 1px solid #edf2f7;
+  padding: 10px 14px;
+  border-radius: 10px;
+}
+
+.meta-label {
+  display: block;
+  font-size: 0.7rem;
+  color: #94a3b8;
+  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.meta-value {
+  display: block;
+  font-size: 0.85rem;
+  color: #1e293b;
+  font-weight: 600;
+  margin-top: 2px;
+  word-break: break-all;
+}
+
+.jwt-preview-block {
+  background: #0f172a;
+  border-radius: 10px;
+  padding: 12px 14px;
+  margin-bottom: 18px;
+  color: #cbd5e1;
+}
+
+.jwt-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.72rem;
+  color: #94a3b8;
+  margin-bottom: 6px;
+}
+
+.copy-btn {
+  background: #334155;
+  color: #f8fafc;
+  border: none;
+  font-size: 0.68rem;
+  padding: 2px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.copy-btn:hover {
+  background: #475569;
+}
+
+.jwt-preview-block code {
+  font-family: monospace;
+  font-size: 0.72rem;
+  word-break: break-all;
+  color: #38bdf8;
+  display: block;
+  max-height: 48px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.system-capabilities h4 {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #475569;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+}
+
+.system-capabilities ul {
+  list-style: none;
+}
+
+.system-capabilities li {
+  font-size: 0.78rem;
+  color: #334155;
+  padding: 4px 0 4px 18px;
+  position: relative;
+}
+
+.system-capabilities li::before {
+  content: "✔";
+  position: absolute;
+  left: 0;
+  color: var(--teal-primary);
+  font-size: 0.75rem;
+}
+
+.modal-footer {
+  padding: 16px 24px;
+  border-top: 1px solid #f1f5f9;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  background: #f8fafc;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes popIn {
+  from { transform: scale(0.95); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+/* ==========================================================================
+   Responsive Adaptations
+   ========================================================================== */
+@media (max-width: 768px) {
+  body {
+    padding: 10px 8px 16px;
+  }
+
+  .container {
+    width: 100%;
+    min-height: 640px;
+    flex-direction: column;
+  }
+
+  .form-container {
+    width: 100%;
+    padding: 24px 20px;
+  }
+
+  .sign-in-container {
+    width: 100%;
+  }
+
+  .sign-up-container {
+    width: 100%;
+  }
+
+  .overlay-container {
+    display: none; /* Fallback for small screens: switch with a tab or toggle */
+  }
+
+  .container.right-panel-active .sign-in-container {
+    transform: none;
+    display: none;
+  }
+
+  .container.right-panel-active .sign-up-container {
+    transform: none;
+    opacity: 1;
+    position: relative;
+    display: flex;
+  }
+
+  .meta-grid {
+    grid-template-columns: 1fr;
+  }
+}
